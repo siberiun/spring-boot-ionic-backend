@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable {
@@ -26,7 +25,7 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instante;
 
@@ -40,8 +39,9 @@ public class Pedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "endereco_de_entrega_id")
 	private Endereco enderecoDeEntrega;
-	
-	//Lista de itens do pedido e o SET garante que não vai ter item repetido no pedido
+
+	// Lista de itens do pedido e o SET garante que não vai ter item repetido no
+	// pedido
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
 
@@ -55,6 +55,14 @@ public class Pedido implements Serializable {
 		this.instante = instante;
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemPedido ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
 	}
 
 	public Integer getId() {
@@ -96,7 +104,7 @@ public class Pedido implements Serializable {
 	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
-	
+
 	public Set<ItemPedido> getItens() {
 		return itens;
 	}
@@ -104,8 +112,6 @@ public class Pedido implements Serializable {
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -131,7 +137,5 @@ public class Pedido implements Serializable {
 			return false;
 		return true;
 	}
-
-
 
 }
