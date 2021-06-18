@@ -20,6 +20,7 @@ import com.marata.cursomv.domain.PagamentoComCartao;
 import com.marata.cursomv.domain.Pedido;
 import com.marata.cursomv.domain.Produto;
 import com.marata.cursomv.domain.enums.EstadoPagamento;
+import com.marata.cursomv.domain.enums.Perfil;
 import com.marata.cursomv.domain.enums.TipoCliente;
 import com.marata.cursomv.repositories.CategoriaRepository;
 import com.marata.cursomv.repositories.CidadeRepository;
@@ -76,16 +77,16 @@ public class DBService {
 		Produto p11 = new Produto(null, "Shampoo", 90.00);
 
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
-		cat2.getProdutos().addAll(Arrays.asList(p2,p4));
-		cat3.getProdutos().addAll(Arrays.asList(p5,p6));
-		cat4.getProdutos().addAll(Arrays.asList(p1,p2,p3,p7));
+		cat2.getProdutos().addAll(Arrays.asList(p2, p4));
+		cat3.getProdutos().addAll(Arrays.asList(p5, p6));
+		cat4.getProdutos().addAll(Arrays.asList(p1, p2, p3, p7));
 		cat5.getProdutos().addAll(Arrays.asList(p8));
-		cat6.getProdutos().addAll(Arrays.asList(p9,p10));
+		cat6.getProdutos().addAll(Arrays.asList(p9, p10));
 		cat7.getProdutos().addAll(Arrays.asList(p11));
-		
-		p1.getCategorias().addAll(Arrays.asList(cat1,cat4));
-		p2.getCategorias().addAll(Arrays.asList(cat1, cat2,cat4));
-		p3.getCategorias().addAll(Arrays.asList(cat1,cat4));
+
+		p1.getCategorias().addAll(Arrays.asList(cat1, cat4));
+		p2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
+		p3.getCategorias().addAll(Arrays.asList(cat1, cat4));
 		p4.getCategorias().addAll(Arrays.asList(cat2));
 		p5.getCategorias().addAll(Arrays.asList(cat3));
 		p6.getCategorias().addAll(Arrays.asList(cat3));
@@ -94,7 +95,7 @@ public class DBService {
 		p9.getCategorias().addAll(Arrays.asList(cat6));
 		p10.getCategorias().addAll(Arrays.asList(cat6));
 		p11.getCategorias().addAll(Arrays.asList(cat7));
-		
+
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
@@ -111,16 +112,23 @@ public class DBService {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-		Cliente cli1 = new Cliente(null, "Maria Silva", "contato@josenias.com.br", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123456"));
-
+		Cliente cli1 = new Cliente(null, "Maria Silva", "contato@josenias.com.br", "36378912377",
+				TipoCliente.PESSOAFISICA, pe.encode("123456"));
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+		Cliente cli2 = new Cliente(null, "Ana Silva", "publico@josenias.com.br", "69560193023",
+				TipoCliente.PESSOAFISICA, pe.encode("123456"));
+		cli2.getTelefones().addAll(Arrays.asList("998874454", "30253440"));
+		cli2.addPerfil(Perfil.ADMIN);
 
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e3 = new Endereco(null, "Rua Alferes José", "200", "Apto 204", "Jardim", "30253440", cli2, c3);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-		clienteRepository.saveAll(Arrays.asList(cli1));
+		clienteRepository.saveAll(Arrays.asList(cli1,cli2));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
