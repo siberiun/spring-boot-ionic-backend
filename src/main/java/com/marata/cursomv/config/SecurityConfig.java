@@ -40,13 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
 
 	// Permitir consultar , mas não alterar
-	private static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**", "/estados/**" };
 
 	// Permitir consultar , mas não alterar
-	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/clientes",
-			"/auth/forgot/**"
-	};
+	private static final String[] PUBLIC_MATCHERS_POST = { "/clientes", "/auth/forgot/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -55,10 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 		http.cors().and().csrf().disable();
 		// Permitir acesso da lista PUBLIC_MATCHERS sem autenticação.
-		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-				.antMatchers(PUBLIC_MATCHERS).permitAll()
+		http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll()
 				.anyRequest().authenticated();
 
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
